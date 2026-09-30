@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><meta name="description" content="谋求片刻欢愉。"><!-- 图标 --><link rel="icon" href="https://tothefew.github.io/favicon.ico" sizes="any"><!-- Mastodon 身份验证（可选） --><link rel="me" href="https://c7.io/@sad"><!-- Feed --><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="https://tothefew.github.io/atom.xml"><!-- OG Meta --><meta property="og:title" content="Nothing Here · 谋欢"><meta property="og:description" content="谋求片刻欢愉。"><meta property="og:type" content="article"><meta property="og:url" content="https://tothefew.github.io/nothinghere/"><meta property="og:image" content="https://tothefew.github.io/favicon.ico"><meta property="og:site_name" content="谋欢"><!-- 页面标题 --><title>Nothing Here · 谋欢</title><!-- CSS 变量注入 --><style>
+  :root {
+    --bg: #F5F0E8;
+    --text: #2A2420;
+    --text-muted: #6B6058;
+    --border: #D8CFC5;
+    --border-quote: #8CA88C;
+    --accent: #B85A4A;
+    --code-bg: #F5F0E8;
+    --code-text: #2A2420;
+    --code-border: #D8CFC5;
+    --inline-code-bg: #EDE4E0;
+    --inline-code-text: #5A4A48;
+    --highlight-internal: #E8D5A0;
+    --highlight-external: #B5C8D8;
+    --toc-bg: rgba(245, 240, 232, 0.95);
+    --image-placeholder: #D8D0C8;
+    --footnote-color: #8CA88C;
+  }
+</style><link rel="stylesheet" href="/_astro/BaseLayout.C15B2XbT.css"></head><body><div class="reading-progress" id="reading-progress"></div>
+<nav style="display:flex;justify-content:space-between;align-items:center;padding:2em 0 0.2em 0;flex-wrap:wrap">
+  <div>
+    <a href="/" style="color:var(--text);font-weight:700;font-size:clamp(1.8em,4.5vw,2.4em);text-decoration:none">谋欢</a>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:clamp(1.2em,3vw,2em)">
+    <a href="/pages/" style="color:var(--text-muted)">Pages</a>
+    <a href="/atom.xml" style="color:var(--text-muted)">Feed</a>
+  </div>
+</nav>
+<div style="border-bottom:2px solid var(--border);margin:0 0 clamp(0.8em,2vw,1.5em) 0"></div>
+<main><article><h1 style="font-size:clamp(1.6em,3.5vw,2.4em);margin-bottom:0.2em">Nothing Here</h1><div style="color:var(--text-muted);font-size:0.9em;margin-top:0.3em;margin-bottom:0.3em">2026-09-30 · 1660字符</div><div class="post-content"><h2 id="nothing-here">Nothing Here</h2>
+<p><code>Nothing Here</code>是<code>XING</code>的Astro的移植主题。</p>
+<h2 id="xing">XING?</h2>
+<p><code>XING</code>是本站所使用的静态博客生成器的名称，实际上可以看作一个没有声调的拼音，可译为<code>星</code>、<code>行</code>、<code>醒</code>等字。至于这个玩意儿……是我用<del>指使</del>AI（前期是Kimi，后期是Deepseek）搓出来的一套自用的从.md文件到.html的静态博客生成方案。</p>
+<p>不过也是极其粗糙的一个作品，目前还处于调试阶段……所以出现什么故障都是有可能的，一直处于修修补补的状态。</p>
+<p>至于为什么不使用Hexo、Hugo等成熟的静态博客生成器，其实一开始我有认真考虑过，但在打开它们的文档后失望的退出来了……太复杂了……我只是想要一个简单易用可定制的博客生成方案，并不想为那些总也用不到的功能额外增加我的学习。</p>
+<h2 id="工作原理">工作原理</h2>
+<p>我本地存放的目录层级：</p>
+<div class="code-block"><div class="code-header"><button class="copy-btn" data-target="code-p7uith8q2" type="button" title="复制代码"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div><pre id="code-p7uith8q2"><code>项目根目录
+├── 源码层(写死的)
+│   ├── build.js        → 真正的核心
+│   ├── posts/          → 被 build.js 读取，生成.html
+│   └── static/         → 被 build.js 复制到dist中，放文件的地方
+│
+├── 构建层（自动生成）
+│   └── dist/           → 包含以下内容
+│       ├── index.html  ← 来自 posts/*.md
+│       ├── *.html     ← 来自 posts/*.md
+│       ├── pages/      ← 来自 posts/pages.md（该页面写死在导航栏中）
+│       ├── *.xml/json  ← 来自 build.js 生成（同时包含RSS、ATOM和JSON Feed）
+│       └── *.asc/*.ico ← 来自 static/
+│
+└── 部署层
+    └── dist/ 的内容 → 上传至 Github Pages，部署到网站上
+</code></pre></div>
+<p>这套方案的主要工作原理（参照上表，根据我的理解）：</p>
+<ol>
+<li>
+<p>写作，我比较习惯用Markdown（解析库用micromark+micromark extension gfm）来码字，所以这也是这套方案设计的起点。</p>
+</li>
+<li>
+<p>把.md文件放到posts文件夹里，静态文件放在static文件夹中，图片用外链（直接放到Github上国内加载太慢了）。</p>
+</li>
+<li>
+<p>写作完保存至本地，在根目录运行<code>cmd</code>》<code>node build.js</code>》拖拽到Github，完成部署。</p>
+</li>
+</ol>
+<h2 id="特性">特性</h2>
+<ul>
+<li>
+<p>无服务器化设计，任何支持静态网站的平台都可以拖拽式部署。</p>
+</li>
+<li>
+<p>极简设计<del>简陋，并且有时候显示效果还不太合理；有AI风味；部分功能半残</del>，没有让人眼花缭乱的动效<del>才不是因为我不会写呢</del>。</p>
+</li>
+<li>
+<p>（对于我）没有冗余功能，所有的设计都是因需求而生。</p>
+</li>
+<li>
+<p>可以使用markdown写作，更顺手。</p>
+</li>
+<li>
+<p>每次发布/修改都要打开电脑（严重缺点，尤其是每次刚发布完结果又发现有错别字时）</p>
+</li>
+<li>
+<p><del>使用surge部署，因为surge免费版没有自定义域的SSL功能，所以临时使用cf来套用CDN，导致在国内访问效果“喜人”😢（不过还是略强于surge）。日后可能考虑用cf优选或者别的什么解决方案。</del>已换回Github Pages，虽然surge.sh确实对于我来说使用更加跟手。</p>
+</li>
+<li>
+<p>除图床外没有外部依赖，隐私更友好。</p>
+</li>
+<li>
+<p>不采用路径区分文章和页面，因为它们有些时候会互相转化。</p>
+</li>
+<li>
+<p>（缺点）目前上传部署过程还需手动，计划未来集成一些半自动的推送方案。</p>
+</li>
+</ul>
+<p>（所以这玩意应该会被我使用蛮长一段时间，除非我开始修不好它）</p></div></article></main><button class="back-top-only" onclick="scrollToTop()" title="按 T 键也可快速返回顶部哦！">↑</button>
+<div id="lightbox" style="display:none;position:fixed;inset:0;background:var(--bg);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center">
+  <img id="lightbox-img" style="max-width:95%;max-height:95%;border-radius:8px;object-fit:contain;display:block;margin:auto;box-shadow:0 8px 32px rgba(0,0,0,0.15)" />
+  <button id="lightbox-prev" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);background:rgba(60,56,52,0.12);border:none;color:var(--text);font-size:2.5em;padding:0.1em 0.4em;border-radius:50%;cursor:pointer;display:none;backdrop-filter:blur(4px)">‹</button>
+  <button id="lightbox-next" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(60,56,52,0.12);border:none;color:var(--text);font-size:2.5em;padding:0.1em 0.4em;border-radius:50%;cursor:pointer;display:none;backdrop-filter:blur(4px)">›</button>
+  <button id="lightbox-close" style="position:absolute;top:20px;right:25px;background:none;border:none;color:var(--text);font-size:2.5em;cursor:pointer;opacity:0.5">&times;</button>
+</div>
+
+<div id="shortcut-help" class="shortcut-help">
+  <div class="shortcut-help-inner">
+    <h3>快捷键</h3>
+    <table>
+      <tr><td><kbd>J</kbd></td><td>向下滚动一屏</td></tr>
+      <tr><td><kbd>K</kbd></td><td>向上滚动一屏</td></tr>
+      <tr><td><kbd>T</kbd></td><td>回到页面顶部</td></tr>
+      <tr><td><kbd>G</kbd></td><td>跳到页面底部</td></tr>
+      <tr><td><kbd>D</kbd></td><td>开关目录</td></tr>
+      <tr><td><kbd>Esc</kbd></td><td>关闭目录 / 帮助</td></tr>
+      <tr><td><kbd>?</kbd></td><td>显示本帮助</td></tr>
+    </table>
+    <div class="hint">按 Esc 或点击空白处关闭</div>
+  </div>
+</div>
+<footer style="text-align:center;padding:1.5em 0;color:var(--text-muted);font-size:0.8em">&nbsp;</footer></body></html><script type="module" src="/_astro/BlogPost.astro_astro_type_script_index_0_lang.eqiIUwRV.js"></script>
